@@ -25,6 +25,9 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/vcs.xml
+.idea/**/profiles_settings.xml
+.idea/**/Project_Default.xml
 
 # AWS User-specific
 .idea/**/aws.xml
