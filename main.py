@@ -1,7 +1,7 @@
 import argparse
 from portal import *
 
-version = '1.0.0'
+version = '1.1.0'
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
