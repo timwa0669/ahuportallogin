@@ -3,9 +3,9 @@ from portal import *
 import os
 import sys
 
-version = '1.1.1'
+version = '1.1.2'
 program_name = 'ahuportallogin'
-program_description = 'AnHui University wifi portal login&logout script'
+program_description = 'Anhui University campus network login and logout script'
 
 
 if __name__ == '__main__':
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + version)
     parser.add_argument('-u', '--user', nargs='?', type=str, help='login username')
     parser.add_argument('-p', '--password', nargs='?', type=str, help='login password')
-    parser.add_argument('--logout', action='store_true', help='logout of ahu.portal')
+    parser.add_argument('--logout', action='store_true', help='logout of the campus network')
     args = parser.parse_args()
     try:
         portal = Portal()
