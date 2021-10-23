@@ -1,6 +1,7 @@
 import argparse
 from portal import *
 import os
+import sys
 
 version = '1.1.1'
 program_name = 'ahuportallogin'
@@ -23,10 +24,10 @@ if __name__ == '__main__':
     else:
         try:
             portal.set_credentials(args.user, args.password)
-        except ValueError:
-            print('Login credentials are incomplete', file=os.sys.stderr)
-            print('Both username and password are required when login', file=os.sys.stderr, end=os.linesep + os.linesep)
-            parser.print_help(file=os.sys.stderr)
+        except IncompleteCredentialsError:
+            print('Login credentials are incomplete', file=sys.stderr)
+            print('Both username and password are required when login', file=sys.stderr, end=os.linesep + os.linesep)
+            parser.print_help(file=sys.stderr)
             exit(1)
         else:
             portal.request_login()

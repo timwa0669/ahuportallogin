@@ -8,11 +8,12 @@ import asyncio
 random.seed(a=None, version=2)
 
 
-def gen_random_num():
-    return random.randint(500, 10500)
+class IncompleteCredentialsError(Exception):
+    pass
 
 
 class Portal:
+    random_int_range = (500, 10500)
     captive_portal_address = '223.5.5.5'
     login_url = 'http://172.16.253.3:801/eportal/'
     logout_url_wired = 'http://172.16.253.3:801/eportal/?c=Portal&a=logout&callback=dr1004&login_method=1&ac_logout=0&register_mode=1'
@@ -28,6 +29,9 @@ class Portal:
             self.get_login_params()
             self.set_login_params()
 
+    def gen_random_num(self):
+        return random.randint(self.random_int_range[0], self.random_int_range[1])
+
     def get_captive_portal_url(self, captive_portal_address):
         return 'http://' + captive_portal_address + '/?cmd=redirect&arubalp=12345'
 
@@ -36,7 +40,7 @@ class Portal:
 
     def set_credentials(self, usr, pwd):
         if usr is None or pwd is None:
-            raise ValueError('Login credentials are incomplete')
+            raise IncompleteCredentialsError('Login credentials are incomplete')
         self.login_params['user_account'] = usr
         self.login_params['user_password'] = pwd
         return 0
@@ -56,7 +60,7 @@ class Portal:
             self.login_params['wlan_user_ip'] = self.login_params_queried['ip']
             self.login_params['wlan_user_mac'] = self.login_params_queried['mac'].replace(':', '')
             self.login_params['wlan_ac_ip'] = self.login_params_queried['switchip']
-        self.login_params['v'] = gen_random_num()
+        self.login_params['v'] = self.gen_random_num()
 
     def get_login_params(self):
         self.login_params_queried = dict(parse_qsl(self.portal_request_result.query))
