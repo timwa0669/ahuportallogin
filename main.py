@@ -1,29 +1,35 @@
 import argparse
 from portal import *
+import os
 
 version = '1.1.0'
+program_name = 'ahuportallogin'
+program_description = 'AnHui University wifi portal login&logout script'
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        prog='ahuportallogin',
-        description='AnHui University wifi portal login&logout script'
+        prog=program_name,
+        description=program_description
     )
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + version)
     parser.add_argument('-u', '--user', nargs='?', type=str, help='login username')
     parser.add_argument('-p', '--password', nargs='?', type=str, help='login password')
     parser.add_argument('--logout', action='store_true', help='logout of ahu.portal')
     args = parser.parse_args()
-    if args.logout is True:
-        logout = Portal()
-        logout.request_logout()
-        del logout
-    elif args.user is not None and args.password is not None:
-        login = Portal()
-        if login.is_logged_in():
-            del login
-        else:
-            login.set_credentials(args.user, args.password)
-            result = login.request_login()
-            del login
+    portal = Portal()
+    if args.logout:
+        portal.request_logout()
     else:
-        parser.error('Unexpected arguments. Try -h or --help for detailed usage.')
+        try:
+            portal.set_credentials(args.user, args.password)
+        except ValueError:
+            print('Login credentials are incomplete', file=os.sys.stderr)
+            print('Both username and password are required when login', file=os.sys.stderr, end=os.linesep + os.linesep)
+            parser.print_help(file=os.sys.stderr)
+            exit(1)
+        else:
+            portal.request_login()
+    exit(0)
+
+

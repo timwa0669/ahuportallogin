@@ -35,8 +35,11 @@ class Portal:
         return 'http://' + url + '/auth/logout.html'
 
     def set_credentials(self, usr, pwd):
+        if usr is None or pwd is None:
+            raise ValueError('Login credentials are incomplete')
         self.login_params['user_account'] = usr
         self.login_params['user_password'] = pwd
+        return 0
 
     def set_login_params(self):
         self.login_params['c'] = 'Portal'
@@ -71,7 +74,7 @@ class Portal:
             return False
 
     def request_login(self):
-        r = requests.get(self.login_url, params=self.login_params)
+        requests.get(self.login_url, params=self.login_params)
 
     def request_logout(self):
         asyncio.run(self.request_logout_())
