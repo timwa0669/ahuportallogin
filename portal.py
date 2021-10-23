@@ -19,6 +19,7 @@ class Portal:
     logout_url_wired = 'http://172.16.253.3:801/eportal/?c=Portal&a=logout&callback=dr1004&login_method=1&ac_logout=0&register_mode=1'
     logout_domain_wireless = 'securelogin.arubanetworks.com'
     dns_server = '172.16.252.3'
+    request_timeout = 2
 
     portal_request_result = None
     login_params = {}
@@ -70,7 +71,7 @@ class Portal:
             self.login_params['login_method'] = 1
 
     def is_logged_in(self):
-        r = requests.get(self.get_captive_portal_url(self.captive_portal_address))
+        r = requests.get(self.get_captive_portal_url(self.captive_portal_address), timeout=self.request_timeout)
         self.portal_request_result = urlsplit(r.url)
         if self.portal_request_result.netloc == self.captive_portal_address:
             return True
@@ -78,7 +79,10 @@ class Portal:
             return False
 
     def request_login(self):
-        requests.get(self.login_url, params=self.login_params)
+        try:
+            requests.get(self.login_url, params=self.login_params, timeout=self.request_timeout)
+        except requests.exceptions.ReadTimeout:
+            return
 
     def request_logout(self):
         asyncio.run(self.request_logout_())
@@ -93,10 +97,16 @@ class Portal:
             return
         else:
             for i in answers:
-                requests.get(self.get_logout_url_wireless(str(i)), timeout=2)
+                try:
+                    requests.get(self.get_logout_url_wireless(str(i)), timeout=self.request_timeout)
+                except requests.exceptions.ReadTimeout:
+                    return
 
     async def request_logout_wired(self):
-        requests.get(self.logout_url_wired, timeout=2)
+        try:
+            requests.get(self.logout_url_wired, timeout=self.request_timeout)
+        except requests.exceptions.ReadTimeout:
+            return
 
     async def request_logout_(self):
         result_wireless = asyncio.create_task(self.request_logout_wireless())
