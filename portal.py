@@ -2,6 +2,8 @@ import requests
 from urllib.parse import *
 import random
 import dns.resolver
+import dns.asyncresolver
+import asyncio
 
 random.seed(a=None, version=2)
 
@@ -54,11 +56,11 @@ class Portal:
         self.login_params['v'] = gen_random_num()
 
     def get_login_params(self):
+        self.login_params_queried = dict(parse_qsl(self.portal_request_result.query))
         if 'essid' in self.login_params_queried:
             self.login_params['login_method'] = 8
         else:
             self.login_params['login_method'] = 1
-        self.login_params_queried = dict(parse_qsl(self.portal_request_result.query))
 
     def is_logged_in(self):
         r = requests.get(self.get_captive_portal_url(self.captive_portal_address))
@@ -72,15 +74,25 @@ class Portal:
         r = requests.get(self.login_url, params=self.login_params)
 
     def request_logout(self):
+        asyncio.run(self.request_logout_())
+
+    async def request_logout_wireless(self):
         resolver = dns.resolver.Resolver()
         resolver.nameservers = [self.dns_server]
-        resolver.timeout = 1.5
+        resolver.timeout = 2
         try:
             answers = resolver.resolve(self.logout_domain_wireless, 'A')
-        except dns.resolver.NoNameservers:
-            r = requests.get(self.logout_url_wired)
-        except dns.exception.Timeout:
-            r = requests.get(self.logout_url_wired)
+        except (dns.resolver.NoNameservers, dns.resolver.NXDOMAIN, dns.exception.Timeout):
+            return
         else:
             for i in answers:
-                r = requests.get(self.get_logout_url_wireless(str(i)))
+                requests.get(self.get_logout_url_wireless(str(i)), timeout=2)
+
+    async def request_logout_wired(self):
+        requests.get(self.logout_url_wired, timeout=2)
+
+    async def request_logout_(self):
+        result_wireless = asyncio.create_task(self.request_logout_wireless())
+        result_wired = asyncio.create_task(self.request_logout_wired())
+        await result_wired
+        await result_wireless
