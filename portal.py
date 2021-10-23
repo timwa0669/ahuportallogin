@@ -54,11 +54,11 @@ class Portal:
         self.login_params['v'] = gen_random_num()
 
     def get_login_params(self):
+        self.login_params_queried = dict(parse_qsl(self.portal_request_result.query))
         if 'essid' in self.login_params_queried:
             self.login_params['login_method'] = 8
         else:
             self.login_params['login_method'] = 1
-        self.login_params_queried = dict(parse_qsl(self.portal_request_result.query))
 
     def is_logged_in(self):
         r = requests.get(self.get_captive_portal_url(self.captive_portal_address))
