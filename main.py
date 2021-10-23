@@ -2,7 +2,7 @@ import argparse
 from portal import *
 import os
 
-version = '1.1.0'
+version = '1.1.1'
 program_name = 'ahuportallogin'
 program_description = 'AnHui University wifi portal login&logout script'
 
