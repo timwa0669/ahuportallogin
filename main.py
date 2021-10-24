@@ -5,7 +5,7 @@ from portal import *
 from os import *
 from sys import *
 
-program_version = '1.1.2'
+program_version = '1.1.3'
 program_name = 'ahuportallogin'
 program_description = 'Anhui University campus network login and logout script'
 
