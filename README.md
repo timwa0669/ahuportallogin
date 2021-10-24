@@ -20,11 +20,11 @@ Supports login and logout via ethernet or ahu.portal.
 
 ### Login examples
 
-Username is A12345678@cmccyx, password is xyz  
+Username is A12345678@cmccyx, password is xyz:  
 
     ahuportallogin -u="A12345678@cmccyx" -p="xyz"
 
-Username is B12345678, password is xyz  
+Username is B12345678, password is xyz:  
 
     ahuportallogin --user="B12345678" --password="xyz"
 
@@ -48,14 +48,21 @@ or
 
     ahuportallogin --help
 
-## Build
+## Build & Run from source code
 
 ### Requisites
 
 python >= 3.7  
 All running dependencies from requirements.txt  
-pyinstaller >= 4
+pyinstaller >= 4.5  
 
 ### One-file build scripts
 
-    pyinstaller -F -n="ahuportallogin" main.py
+Ensure you installed all dependencies via pip3:  
+
+    pip3 install --upgrade -r requirements.txt
+    pip3 install --upgrade pyinstaller
+
+Execute pyinstaller in the source root directory:  
+
+    pyinstaller --clean -F -n="ahuportallogin" main.py
