@@ -16,41 +16,46 @@ Supports login and logout via ethernet or ahu.portal.
                             login username  
       -p [PASSWORD], --password [PASSWORD]  
                             login password  
-      --logout              logout of the campus network  
+      --logout              logout of the campus network
 
-## Requisites
-
-python >= 3.7  
-Check the requirements for the python packages from requirements.txt  
-
-## Examples
-
-### Login
+### Login examples
 
 Username is A12345678@cmccyx, password is xyz  
 
-    python3 main.py -u="A12345678@cmccyx" -p="xyz"
+    ahuportallogin -u="A12345678@cmccyx" -p="xyz"
 
 Username is B12345678, password is xyz  
 
-    python3 main.py --user="B12345678" --password="xyz"
+    ahuportallogin --user="B12345678" --password="xyz"
 
-### Logout
+### Logout examples
 
-    python3 main.py --logout
+    ahuportallogin --logout
 
-### Get version
+### Print version
 
-    python3 main.py -v
-
-or  
-
-    python3 main.py --version
-
-### Print help message
-
-    python3 main.py -h
+    ahuportallogin -v
 
 or  
 
-    python3 main.py --help
+    ahuportallogin --version
+
+### Print help messages
+
+    ahuportallogin -h
+
+or  
+
+    ahuportallogin --help
+
+## Build
+
+### Requisites
+
+python >= 3.7  
+All running dependencies from requirements.txt  
+pyinstaller >= 4
+
+### One-file build scripts
+
+    pyinstaller -F -n="ahuportallogin" main.py
