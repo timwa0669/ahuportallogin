@@ -21,9 +21,7 @@ Supports login and logout via ethernet or ahu.portal.
 ## Requisites
 
 python >= 3.7  
-Python Packages: urllib3 requests dnspython
-
-    pip3 install urllib3 requests dnspython
+Check the requirements for the python packages from requirements.txt  
 
 ## Examples
 
