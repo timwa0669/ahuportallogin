@@ -35,7 +35,9 @@ if __name__ == '__main__':
                 print('Login credentials are incomplete', file=stderr)
                 print('Both username and password are required when login', file=stderr, end=linesep + linesep)
                 parser.print_help(file=stderr)
-                exit(1)
+                exit(22)
+            except KeyboardInterrupt:
+                exit(0)
             else:
                 portal.request_login()
     exit(0)
