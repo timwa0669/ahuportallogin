@@ -63,6 +63,6 @@ Ensure you installed all dependencies via pip3:
     pip3 install --upgrade -r requirements.txt
     pip3 install --upgrade pyinstaller
 
-Execute pyinstaller in the source root directory:  
+Make sure pyinstaller is in $PATH and then execute pyinstaller in the source root directory:  
 
     pyinstaller --clean -F -n="ahuportallogin" main.py
