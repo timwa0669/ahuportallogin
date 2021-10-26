@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from setuptools import setup
+from setuptools import setup, find_packages
 from main import *
 
 setup(
@@ -9,5 +9,6 @@ setup(
     description=program_description,
     author='timwa0669',
     author_email='24656878+timwa0669@users.noreply.github.com',
-    url='https://github.com/timwa0669/ahuportallogin/'
+    url='https://github.com/timwa0669/ahuportallogin/',
+    packages=find_packages()
 )

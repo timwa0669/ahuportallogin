@@ -11,7 +11,7 @@ program_name = 'ahuportallogin'
 program_description = 'Anhui University campus network login and logout script'
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(
         prog=program_name,
         description=program_description
@@ -44,3 +44,5 @@ if __name__ == '__main__':
     exit(0)
 
 
+if __name__ == '__main__':
+    main()
