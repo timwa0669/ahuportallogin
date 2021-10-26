@@ -4,6 +4,7 @@ import argparse
 from portal import *
 from os import *
 from sys import *
+import errno
 
 program_version = '1.1.4'
 program_name = 'ahuportallogin'
@@ -22,24 +23,24 @@ if __name__ == '__main__':
     args = parser.parse_args()
     try:
         portal = Portal()
-    except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
-        print('Network is unreachable', file=stderr)
-        exit(51)
-    else:
         if args.logout:
             portal.request_logout()
         else:
-            try:
-                portal.set_credentials(args.user, args.password)
-            except IncompleteCredentialsError:
-                print('Login credentials are incomplete', file=stderr)
-                print('Both username and password are required when login', file=stderr, end=linesep + linesep)
-                parser.print_help(file=stderr)
-                exit(22)
-            except KeyboardInterrupt:
-                exit(0)
-            else:
-                portal.request_login()
+            portal.set_credentials(args.user, args.password)
+            portal.request_login()
+    except requests.exceptions.ConnectionError:
+        print('Network is unreachable', file=stderr)
+        exit(errno.ENETUNREACH)
+    except requests.exceptions.ReadTimeout:
+        print('Connection timed out', file=stderr)
+        exit(errno.ETIMEDOUT)
+    except IncompleteCredentialsError:
+        print('Login credentials are incomplete', file=stderr)
+        print('Both username and password are required when login', file=stderr, end=linesep + linesep)
+        parser.print_help(file=stderr)
+        exit(errno.EINVAL)
+    except KeyboardInterrupt:
+        exit(errno.EINTR)
     exit(0)
 
 
