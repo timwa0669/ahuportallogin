@@ -6,7 +6,7 @@ from os import *
 from sys import *
 import errno
 
-program_version = '1.1.4'
+program_version = '1.1.4.1'
 program_name = 'ahuportallogin'
 program_description = 'Anhui University campus network login and logout script'
 
